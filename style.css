@@ -11,10 +11,9 @@ body {
 #slider_container {
 	position:relative;
 	display:block;
-	width:960px;
+	width:100%;
 	height:500px;
 	margin:auto;
-	border:2px solid blue;
 }
 
 .slide {
@@ -24,7 +23,6 @@ body {
 	left:0;
 	width:100%;
 	height:100%;
-	display:none;
 }
 
 .slide:first-child {
@@ -64,11 +62,20 @@ body {
 }
 
 #next, #previous {
-	display:block;
-	width:100px;
-	height:100px;
+	position:absolute;
+	top:50%;
+	margin-top:-25px;
+	width:50px;
+	height:50px;
 	background:#333;
-	border:1px solid red;
+}
+
+#previous {
+	left:0px;
+}
+
+#next {
+	right:0px;
 }
 
 #thumbnail {

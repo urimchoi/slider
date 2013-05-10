@@ -1,58 +1,63 @@
 // Change the size of the thumbnails from Small, Medium, and Large 
 
 $(document).ready(function() {
-	var $firstSlide = $('.slide').first(),
-		$lastSlide = $('.slide').last();
+	var $firstSlide = $('.slide:first'),
+		$lastSlide = $('.slide:last'),
+		i = null;
 
-	// creates an icon for each slide
+	var containerWidth = $('#slider_container').width(),
+		numSlides = $('.slide').length,
+		resetWidth = (numSlides * containerWidth) - containerWidth;
+
+
+	// positions all the slides next to each other
 	$('.slide').each(function() {
-		$('#thumbnail').append('<div class="ball"></div>');
+		setSlidePosition($(this));
 	});
 
-	// when an icon is hovered over, the background will change to white
-	$('.ball').mouseenter(function() {
-		$(this).animate({backgroundColor:'#fff'}, 500);
-	});
-
-	// when an icon is clicked on, it will take you to that slide
-	$('.ball').click(function() {
-		var i = $(this).index()
-		if (i === $('.slide:visible').index()) {
-			return false;
-		} else {
-			$('.slide:visible').fadeOut(1000);
-			$('.slide').eq(i).fadeIn(1000);
-		}
-		
-	});
-
-	// fade transition between slides
+	// previous and next buttons
 	$('#next').click(function() {
-		nextSlide();
+		nextSlide($('.slide'));
 	});
 
 	$('#previous').click(function() {
-		prevSlide();
+		prevSlide($('.slide'));
 	});
 
+	function setSlidePosition($element) {
+		$element.css({'left':$element.index() * containerWidth});
+	}
 
-	nextSlide = function() {
-		if ($('.slide:visible').is($lastSlide)) {
-			$('.slide:visible').stop(false, true).fadeOut(1000);
-			$firstSlide.fadeIn(1000);
+	function nextSlide($element) {
+		i = $lastSlide.position().left;
+
+		if (i != 0) {
+			$element.animate({left:'-='+containerWidth+'px'}, 500);
 		} else {
-			$('.slide:visible').stop(false, true).fadeOut(1000);
-			$('.slide:visible').next().fadeIn(1000);
+			$element.animate({left:'+='+resetWidth+'px'}, 500);		
 		}
 	}
 
-	prevSlide = function() {
-		if ($('.slide:visible').is($firstSlide)) {
-			$('.slide:visible').stop(false, true).fadeOut(1000);
-			$lastSlide.fadeIn(1000);
+	function prevSlide($element) {
+		i = $firstSlide.position().left;
+
+		if (i != 0) {
+			$element.animate({left:'+='+containerWidth+'px'}, 500);
 		} else {
-			$('.slide:visible').stop(false, true).fadeOut(1000);
-			$('.slide:visible').prev().fadeIn(1000);
+			$element.animate({left:'-='+resetWidth+'px'}, 500);		
 		}
 	}
+
+
+	window.addEventListener('resize', function() {
+
+		// reset the width variables once a browser is resized
+		containerWidth = $('#slider_container').width();
+		resetWidth = (numSlides * containerWidth) - containerWidth;
+
+		// change the position of each slide to correspond with new width
+		$('.slide').each(function() {
+			setSlidePosition($(this));
+		});
+	});
 });
