@@ -26,28 +26,33 @@ $(document).ready(function() {
 		
 	});
 
-
 	// fade transition between slides
 	$('#next').click(function() {
-		if ($('.slide:visible').is($lastSlide)) {
-			$('.slide:visible').fadeOut(1000);
-			$firstSlide.fadeIn(1000);
-		} else {
-			$('.slide:visible').fadeOut(1000);
-			$('.slide:visible').next().fadeIn(1000);
-		}
-		
+		nextSlide();
 	});
 
 	$('#previous').click(function() {
-		if ($('.slide:visible').is($firstSlide)) {
-			$('.slide:visible').fadeOut(1000);
-			$lastSlide.fadeIn(1000);
-		} else {
-			$('.slide:visible').fadeOut(1000);
-			$('.slide:visible').prev().fadeIn(1000);
-		}
-		
+		prevSlide();
 	});
 
+
+	nextSlide = function() {
+		if ($('.slide:visible').is($lastSlide)) {
+			$('.slide:visible').stop(false, true).fadeOut(1000);
+			$firstSlide.fadeIn(1000);
+		} else {
+			$('.slide:visible').stop(false, true).fadeOut(1000);
+			$('.slide:visible').next().fadeIn(1000);
+		}
+	}
+
+	prevSlide = function() {
+		if ($('.slide:visible').is($firstSlide)) {
+			$('.slide:visible').stop(false, true).fadeOut(1000);
+			$lastSlide.fadeIn(1000);
+		} else {
+			$('.slide:visible').stop(false, true).fadeOut(1000);
+			$('.slide:visible').prev().fadeIn(1000);
+		}
+	}
 });
